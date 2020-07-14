@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/profile"
+        android:icon="@android:drawable/ic_menu_myplaces"
+        android:title="profile"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/stream"
+        android:icon="?android:attr/actionModeFindDrawable"
+        android:title="stream"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/map"
+        android:icon="@android:drawable/ic_menu_mapmode"
+        android:title="map"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/broadcast"
+        android:icon="@android:drawable/ic_menu_compass"
+        android:title="broadcast"
+        app:showAsAction="always" />
+</menu>
