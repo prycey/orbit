@@ -31,6 +31,7 @@ public class Message extends ParseObject  {
         put(KEY_BODY, description);
 
     }
+
     public String getHeader(){
         return getString(KEY_HEADER);
     }

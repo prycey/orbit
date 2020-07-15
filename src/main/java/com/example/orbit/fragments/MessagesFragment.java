@@ -1,9 +1,15 @@
 package com.example.orbit.fragments;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +26,7 @@ import com.example.orbit.MessageAdapter;
 import com.example.orbit.R;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 
 import java.util.ArrayList;
@@ -35,6 +42,7 @@ public class MessagesFragment extends Fragment {
     private EndlessRecyclerViewScrollListener scrollListener;
     protected MessageAdapter adapter;
     protected List<Message> allPosts;
+
 
 
     public MessagesFragment() {

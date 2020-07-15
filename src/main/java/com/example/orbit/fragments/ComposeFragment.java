@@ -1,15 +1,21 @@
 package com.example.orbit.fragments;
 
+import android.Manifest;
+import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 
@@ -26,10 +32,15 @@ import android.widget.Toast;
 
 import com.example.orbit.Message;
 import com.example.orbit.R;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
@@ -44,7 +55,7 @@ import static android.app.Activity.RESULT_OK;
  * Use the {@link ComposeFragment} factory method to
  * create an instance of this fragment.
  */
-public class ComposeFragment extends Fragment {
+public class ComposeFragment extends Fragment implements OnMapReadyCallback {
     public static final String Tag = "MainActivity";
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 45;
     private EditText body;
@@ -54,17 +65,18 @@ public class ComposeFragment extends Fragment {
     private BottomNavigationView bottomNavigationView;
     private Button btnSubmit;
     private File photoFile;
+    private ParseGeoPoint point = new ParseGeoPoint();
     public String photoFileName = "photo.jpg";
+    private FusedLocationProviderClient fusedLocationClient;
     private static final int REQUEST_LOCATION = 1;
     LocationManager locationManager;
-
 
 
     public ComposeFragment() {
         // Required empty public constructor
     }
 
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState ){
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         body = view.findViewById(R.id.body);
         btnCaptureImage = view.findViewById(R.id.capture);
@@ -72,7 +84,10 @@ public class ComposeFragment extends Fragment {
         btnSubmit = view.findViewById(R.id.submit);
         header = view.findViewById(R.id.header);
         bottomNavigationView = view.findViewById(R.id.bottom_navigation);
-        //locationManager = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(getContext());
+        locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+
+
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +113,39 @@ public class ComposeFragment extends Fragment {
                 launchCamera(view);
             }
         });
+
+        if(locationManager.isProviderEnabled(locationManager.NETWORK_PROVIDER)) {
+            if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                // TODO: Consider calling
+                //    ActivityCompat#requestPermissions
+                // here to request the missing permissions, and then overriding
+                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                //                                          int[] grantResults)
+                // to handle the case where the user grants the permission. See the documentation
+                // for ActivityCompat#requestPermissions for more details.
+                return;
+            }
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, new LocationListener() {
+                @Override
+                public void onLocationChanged(@NonNull Location location) {
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLatitude();
+                    point.setLatitude(latitude);
+                    point.setLongitude(longitude);
+                }
+            });
+        }
+        else if(locationManager.isProviderEnabled(locationManager.GPS_PROVIDER)){
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, new LocationListener() {
+                @Override
+                public void onLocationChanged(@NonNull Location location) {
+                    double latitude = location.getLatitude();
+                    double longitude = location.getLatitude();
+                    point.setLatitude(latitude);
+                    point.setLongitude(longitude);
+                }
+            });
+        }
 
     }
 
@@ -155,6 +203,8 @@ public class ComposeFragment extends Fragment {
         post.setAuthor(authorTemp);
         post.setMessagebody(bodyTemp);
         post.setPicture(new ParseFile(photoFile));
+        post.setLocation(point);
+
         post.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
@@ -194,5 +244,10 @@ public class ComposeFragment extends Fragment {
         // Inflate the layout for this fragment
         Log.e("tag", "dance");
         return inflater.inflate(R.layout.fragment_compose, container, false);
+    }
+
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
     }
 }
