@@ -10,6 +10,7 @@ public class ParseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         ParseObject.registerSubclass(Message.class);
+        ParseObject.registerSubclass(comment.class);
         // Use for troubleshooting -- remove this line for production
         // Use for monitoring Parse OkHttp traffic
         // Can be Level.BASIC, Level.HEADERS, or Level.BODY

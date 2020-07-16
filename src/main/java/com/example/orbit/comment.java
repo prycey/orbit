@@ -2,6 +2,7 @@ package com.example.orbit;
 
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 @ParseClassName("comment")
 public class comment extends ParseObject {
@@ -11,8 +12,9 @@ public class comment extends ParseObject {
 
 
 
-    public String getUserId() {
-        return getString(USER_ID_KEY);
+
+    public ParseUser getUserId() {
+        return getParseUser(USER_ID_KEY);
     }
 
     public String getBody() {
@@ -22,7 +24,7 @@ public class comment extends ParseObject {
    return (Message)getParseObject("message");
     }
 
-    public void setUserId(String userId) {
+    public void setUserId(ParseUser userId) {
         put(USER_ID_KEY, userId);
     }
 
