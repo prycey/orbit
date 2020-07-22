@@ -37,7 +37,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     LocationManager locationManager;
 
     ParseGeoPoint point = new ParseGeoPoint();
-    Location loc = new Location("");
+    Location loc;
 
 
     public MessageAdapter(Context context, List<Message> posts){
@@ -103,7 +103,19 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
             Date date = post.getCreatedAt();
             Long dateL = date.getTime();
-            Location loc2 = new Location("");
+            final Location loc2 = new Location("");
+            final Location loc = new Location("");
+            loc2.setLatitude(point.getLatitude());
+            loc2.setLongitude(point.getLongitude());
+            ParseGeoPoint parseGeoPoint = locationGive.userLoc(context);
+            Log.i("i", String.valueOf(parseGeoPoint.distanceInKilometersTo(point)));
+
+            Log.i("help3", parseGeoPoint.toString());
+            loc.setLongitude(parseGeoPoint.getLongitude());
+            loc.setLatitude(parseGeoPoint.getLatitude());
+
+            Log.i("help me", loc.toString() + " "+loc2.toString());
+
             if(image != null) {
                 Glide.with(context).load(post.getPicture().getUrl()).into(item);
             }
@@ -122,38 +134,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
                 }
             });
-            if(locationManager.isProviderEnabled(locationManager.NETWORK_PROVIDER)) {
-                if (ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(context, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
-                    return;
-                }
-                locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, new LocationListener() {
-                    @Override
-                    public void onLocationChanged(@NonNull Location location) {
-                        double latitude = location.getLatitude();
-                        double longitude = location.getLatitude();
-                        loc = location;
-                    }
-                });
-            }
-            else if(locationManager.isProviderEnabled(locationManager.GPS_PROVIDER)){
-                locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, new LocationListener() {
-                    @Override
-                    public void onLocationChanged(@NonNull Location location) {
-                        double latitude = location.getLatitude();
-                        double longitude = location.getLatitude();
-                        loc = location;
-                    }
-                });
-            }
-            Log.e("tag",(String.valueOf(loc.distanceTo(loc2))));
-            feetfrom.setText(String.valueOf(loc.distanceTo(loc2)));
+
+            feetfrom.setText(String.valueOf(loc.distanceTo(loc2) * 3.28084));
             datefrom.setText(getTimeAgo(dateL,context));
         }
     }

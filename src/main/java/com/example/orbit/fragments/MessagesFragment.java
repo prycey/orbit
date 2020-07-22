@@ -1,6 +1,7 @@
 package com.example.orbit.fragments;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -19,11 +20,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.SeekBar;
 
+import com.example.orbit.DetailActivity;
 import com.example.orbit.EndlessRecyclerViewScrollListener;
+import com.example.orbit.MainActivity;
 import com.example.orbit.Message;
 import com.example.orbit.MessageAdapter;
 import com.example.orbit.R;
+import com.example.orbit.locationGive;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseGeoPoint;
@@ -42,6 +47,10 @@ public class MessagesFragment extends Fragment {
     private EndlessRecyclerViewScrollListener scrollListener;
     protected MessageAdapter adapter;
     protected List<Message> allPosts;
+    public ParseGeoPoint userLocation;
+    LocationManager locationManager ;
+    SeekBar seekBar ;
+    int radius;
 
 
 
@@ -66,6 +75,7 @@ public class MessagesFragment extends Fragment {
         return fragment;
     }
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +86,10 @@ public class MessagesFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
         rvPosts = view.findViewById(R.id.rvPosts);
+        seekBar = view.findViewById(R.id.seekBar);
+        userLocation = new ParseGeoPoint();
 
         allPosts = new ArrayList<>();
         adapter = new MessageAdapter(getContext(), allPosts);
@@ -84,6 +97,25 @@ public class MessagesFragment extends Fragment {
         LinearLayoutManager linearLayout = new LinearLayoutManager(getContext());
         rvPosts.setLayoutManager(linearLayout);
         queryPosts();
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+                radius = i;
+                adapter.clear();
+                queryPosts();
+                Log.i("i", String.valueOf(radius) + " " +String.valueOf(.000305));
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
         final SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
 
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -131,9 +163,12 @@ public class MessagesFragment extends Fragment {
     }
 
     public void queryPosts(){
+        userLocation = locationGive.userLoc(getContext());
         ParseQuery<Message> query = ParseQuery.getQuery(Message.class);
         query.include(Message.KEY_AUTHOR);
         query.setLimit(20);
+        Log.i("i", userLocation.toString());
+        query.whereWithinKilometers("Location", userLocation, radius * .000305);
         query.addDescendingOrder(Message.KEY_CREATEDAT);
         query.findInBackground(new FindCallback<Message>() {
             @Override
@@ -149,6 +184,7 @@ public class MessagesFragment extends Fragment {
             }
         });
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

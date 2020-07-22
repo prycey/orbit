@@ -12,6 +12,7 @@ import com.example.orbit.R;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -63,15 +64,8 @@ public class MapFragment extends Fragment implements OnMapReadyCallback {
 
         mapView.onCreate(savedInstanceState);
 
-        if (mapView != null) {
-            //googleMap = mapView.getMapAsync();
-
-            googleMap.getUiSettings().setMyLocationButtonEnabled(false);
-
-            //googleMap.setMyLocationEnabled(true);
-
-            googleMap.getUiSettings().setZoomControlsEnabled(true);
-        }
+       // SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+       // mapFragment.getMapAsync(this);
 
         return view;
 

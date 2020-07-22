@@ -129,9 +129,10 @@ public class ComposeFragment extends Fragment implements OnMapReadyCallback {
                 @Override
                 public void onLocationChanged(@NonNull Location location) {
                     double latitude = location.getLatitude();
-                    double longitude = location.getLatitude();
+                    double longitude = location.getLongitude();
                     point.setLatitude(latitude);
                     point.setLongitude(longitude);
+                    //ProfileFragment.setUserLocation(point);
                 }
             });
         }
@@ -140,7 +141,7 @@ public class ComposeFragment extends Fragment implements OnMapReadyCallback {
                 @Override
                 public void onLocationChanged(@NonNull Location location) {
                     double latitude = location.getLatitude();
-                    double longitude = location.getLatitude();
+                    double longitude = location.getLongitude();
                     point.setLatitude(latitude);
                     point.setLongitude(longitude);
                 }

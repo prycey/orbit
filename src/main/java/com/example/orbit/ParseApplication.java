@@ -3,12 +3,19 @@ package com.example.orbit;
 import android.app.Application;
 
 import com.parse.Parse;
+import com.parse.ParseGeoPoint;
 import com.parse.ParseObject;
 
 public class ParseApplication extends Application {
+
+
+
+
+
     @Override
     public void onCreate() {
         super.onCreate();
+
         ParseObject.registerSubclass(Message.class);
         ParseObject.registerSubclass(comment.class);
         // Use for troubleshooting -- remove this line for production
