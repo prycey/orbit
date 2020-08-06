@@ -2,26 +2,35 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/message"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp"
+    android:background="@drawable/customshape">
+
 
     <TextView
         android:id="@+id/header"
-        android:layout_width="230dp"
+        android:layout_width="183dp"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="22dp"
-        android:layout_marginTop="16dp"
+        android:layout_alignParentTop="false"
+        android:layout_centerVertical="false"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
         android:layout_toEndOf="@+id/item"
         android:text="TextView"
         android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteX="155dp" />
 
     <ImageView
         android:id="@+id/item"
         android:layout_width="wrap_content"
-        android:layout_height="88dp"
+        android:layout_height="100dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         tools:layout_editor_absoluteX="7dp"
         tools:layout_editor_absoluteY="5dp"
         tools:srcCompat="@tools:sample/avatars" />
@@ -30,28 +39,36 @@
         android:id="@+id/feetfrom"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginEnd="18dp"
+        android:layout_alignParentTop="false"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="5dp"
+        android:layout_toEndOf="@+id/item"
+        android:drawableLeft="@android:drawable/ic_dialog_map"
         android:text="TextView" />
 
     <TextView
         android:id="@+id/name"
-        android:layout_width="wrap_content"
+        android:layout_width="72dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginStart="11dp"
-        android:layout_marginTop="78dp"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="325dp"
+        android:layout_marginTop="6dp"
+        android:layout_marginEnd="14dp"
         android:text="george" />
 
     <TextView
         android:id="@+id/time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="17dp"
-        android:layout_marginEnd="17dp"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentEnd="false"
+        android:layout_alignParentRight="true"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="70dp"
+        android:layout_marginEnd="222dp"
+        android:layout_toEndOf="@+id/item"
         android:text="TextView" />
 </RelativeLayout>

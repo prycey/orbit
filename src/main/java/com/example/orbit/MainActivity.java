@@ -2,26 +2,18 @@ package com.example.orbit;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import android.Manifest;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.SeekBar;
 import android.widget.Toast;
 
 import com.example.orbit.fragments.ComposeFragment;
-import com.example.orbit.fragments.MapFragment;
 import com.example.orbit.fragments.MessagesFragment;
 import com.example.orbit.fragments.ProfileFragment;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -29,7 +21,6 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.parse.FindCallback;
@@ -91,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
 
         });
-        bottomNavigationView.setSelectedItemId(R.id.broadcast);
+        bottomNavigationView.setSelectedItemId(R.id.stream);
 
 
     }
@@ -108,10 +99,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                                        @Override
                                        public void done(List<Message> objects, ParseException e) {
                                            if (e != null) {
-                                               Log.e("Post", "issue with getting posts", e);
                                            }
                                            for (Message post : objects) {
-                                               Log.i("Post", "Post:" + post.getLocation().getLatitude()+ ", username:" +  post.getLocation().getLongitude());
                                                if(post.getLocation() != null) {
                                                    LatLng postLocal = new LatLng(post.getLocation().getLatitude(), post.getLocation().getLongitude());
                                                    googleMap.addMarker(new MarkerOptions().position(postLocal).title(post.getHeader()));
@@ -137,6 +126,52 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             startActivity(intent);
             return true;
         }
+        if(item.getItemId() == R.id.deleteA){
+            deleteUser(ParseUser.getCurrentUser());
+            ParseUser.getCurrentUser().deleteInBackground();
+            ParseUser.logOut();
+            Toast.makeText(this, "logged out!", Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+            return true;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    public void deleteUser (ParseUser user){
+        ParseQuery<Message> queryM = ParseQuery.getQuery(Message.class);
+        queryM.include(Message.KEY_AUTHOR);
+        queryM.whereEqualTo(Message.KEY_AUTHOR, user);
+        queryM.findInBackground(new FindCallback<Message>() {
+            @Override
+            public void done(List<Message> objects, ParseException e) {
+                for(Message m : objects){
+                    m.deleteInBackground();
+                }
+            }
+        });
+        ParseQuery<UserImage> UI = ParseQuery.getQuery(UserImage.class);
+        UI.include(UserImage.KEY_USER);
+        UI.whereEqualTo(UserImage.KEY_USER, user);
+        UI.findInBackground(new FindCallback<UserImage>() {
+            @Override
+            public void done(List<UserImage> objects, ParseException e) {
+                for(UserImage i : objects){
+                    i.deleteInBackground();
+                }
+            }
+        });
+        ParseQuery<comment> CO = ParseQuery.getQuery(comment.class);
+        CO.include(comment.USER_ID_KEY);
+        CO.whereEqualTo(comment.USER_ID_KEY, user);
+        CO.findInBackground(new FindCallback<comment>() {
+            @Override
+            public void done(List<comment> objects, ParseException e) {
+                for(comment c : objects){
+                    c.deleteInBackground();
+                }
+            }
+        });
+
     }
 }

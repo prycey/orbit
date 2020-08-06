@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/other"
+    android:background="@drawable/gradient"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".RegisterActivity">
@@ -11,12 +12,13 @@
         android:id="@+id/rUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
         android:layout_marginTop="56dp"
+        android:layout_marginEnd="100dp"
         android:ems="10"
+        android:hint="Username"
         android:inputType="textPersonName"
-        android:text="Name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.522"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -24,19 +26,28 @@
         android:id="@+id/rpassword"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="100dp"
         android:layout_marginTop="60dp"
+        android:layout_marginEnd="100dp"
         android:ems="10"
+        android:hint="Password"
         android:inputType="textPassword"
-        app:layout_constraintTop_toBottomOf="@+id/rUsername"
-        tools:layout_editor_absoluteX="106dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rUsername" />
 
     <Button
         android:id="@+id/login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="219dp"
+        android:layout_height="39dp"
+        android:layout_marginStart="170dp"
         android:layout_marginTop="40dp"
-        android:text="Button"
-        app:layout_constraintTop_toBottomOf="@+id/rpassword"
-        tools:layout_editor_absoluteX="176dp" />
+        android:layout_marginEnd="153dp"
+        android:background="@drawable/roundedbutton"
+        android:text="register"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.556"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rpassword" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

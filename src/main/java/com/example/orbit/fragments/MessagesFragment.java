@@ -92,18 +92,17 @@ public class MessagesFragment extends Fragment {
         userLocation = new ParseGeoPoint();
 
         allPosts = new ArrayList<>();
+        //allPosts.clear();
         adapter = new MessageAdapter(getContext(), allPosts);
         rvPosts.setAdapter(adapter);
         LinearLayoutManager linearLayout = new LinearLayoutManager(getContext());
         rvPosts.setLayoutManager(linearLayout);
         queryPosts();
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                radius = i;
-                adapter.clear();
-                queryPosts();
-                Log.i("i", String.valueOf(radius) + " " +String.valueOf(.000305));
+
             }
 
             @Override
@@ -113,6 +112,10 @@ public class MessagesFragment extends Fragment {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
+                radius = seekBar.getProgress();
+                allPosts.clear();
+                queryPosts();
+                Log.i("i", String.valueOf(radius) + " " +String.valueOf(.000305));
 
             }
         });
@@ -121,9 +124,6 @@ public class MessagesFragment extends Fragment {
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                // Your code to refresh the list here.
-                // Make sure you call swipeContainer.setRefreshing(false)
-                // once the network request has completed successfully.
                 adapter.clear();
                 queryPosts();
                 swipeContainer.setRefreshing(false);

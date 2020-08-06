@@ -4,38 +4,42 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/gradient"
     tools:context=".fragments.ComposeFragment">
 
     <EditText
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:inputType="textPersonName"
-        android:text="Name" />
-
-    <EditText
-        android:id="@+id/body"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="start|top"
-        android:inputType="textMultiLine" />
+        android:hint="Header"
+        android:inputType="textPersonName" />
 
     <ImageView
         android:id="@+id/picture"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        tools:src="@tools:sample/avatars" />
+        tools:srcCompat="@drawable/location" />
+
+    <EditText
+        android:id="@+id/body"
+        android:layout_width="match_parent"
+        android:layout_height="222dp"
+        android:gravity="start|top"
+        android:hint="Description"
+        android:inputType="textMultiLine" />
 
     <Button
         android:id="@+id/capture"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:background="@drawable/roundedbutton"
+        android:text="Camera" />
 
     <Button
         android:id="@+id/submit"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Button" />
+        android:background="@drawable/roundedbutton"
+        android:text="Post" />
 
 </LinearLayout>

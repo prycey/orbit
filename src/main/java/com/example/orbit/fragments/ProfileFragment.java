@@ -23,18 +23,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.example.orbit.EndlessRecyclerViewScrollListener;
 import com.example.orbit.Message;
 import com.example.orbit.MessageAdapter;
 import com.example.orbit.ParseApplication;
 import com.example.orbit.R;
 import com.example.orbit.UserImage;
+import com.example.orbit.locationGive;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseFile;
 import com.parse.ParseGeoPoint;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 
@@ -53,34 +57,14 @@ public class ProfileFragment extends Fragment {
     private RecyclerView rvMessages;
     private EndlessRecyclerViewScrollListener scrollListener;
     private ImageView image;
+    private TextView name;
     private File photoFile;
     public String photoFileName = "photo.jpg";
     public static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 45;
     protected MessageAdapter adapter;
     protected List<Message> allPosts;
-
     public ParseGeoPoint userLocation;
-
-    public void setUserLocation(ParseGeoPoint userLocation) {
-        this.userLocation = userLocation;
-    }
-
-    public int getRadius() {
-        return radius;
-    }
-
-    public void setRadius(int radius) {
-        this.radius = radius;
-    }
-
     public int radius;
-
-
-
-
-    public ParseGeoPoint getUserLocation() {
-        return userLocation;
-    }
 
 
     public ProfileFragment() {
@@ -113,17 +97,19 @@ public class ProfileFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+
         super.onViewCreated(view, savedInstanceState);
         rvMessages = view.findViewById(R.id.rvProfile);
         allPosts = new ArrayList<>();
         adapter = new MessageAdapter(getContext(), allPosts);
         image = view.findViewById(R.id.imageView);
-
-        //bar.setProgress(getRadius());
+        name = view.findViewById(R.id.name);
+        name.setText(ParseUser.getCurrentUser().getUsername());
         rvMessages.setAdapter(adapter);
         LinearLayoutManager linearLayout = new LinearLayoutManager(getContext());
         rvMessages.setLayoutManager(linearLayout);
         queryPosts();
+        queryProfile();
         final SwipeRefreshLayout swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
 
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -158,30 +144,17 @@ public class ProfileFragment extends Fragment {
     }
     private void launchCamera(View view) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Create a File reference for future access
         photoFile = getPhotoFileUri(photoFileName);
-
-        // wrap File object into a content provider
-        // required for API >= 24
-        // See https://guides.codepath.com/android/Sharing-Content-with-Intents#sharing-files-with-api-24-or-higher
         Uri fileProvider = FileProvider.getUriForFile(getContext(), "com.codepath.fileprovider", photoFile);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
-
-        // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
-        // So as long as the result is not null, it's safe to use the intent.
-        // Start the image capture intent to take photo
         if (intent.resolveActivity(getContext().getPackageManager()) != null)
             startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
     }
     private File getPhotoFileUri(String fileName) {
         File mediaStorageDir = new File(getContext().getExternalFilesDir(Environment.DIRECTORY_PICTURES), "Tag");
-
-        // Create the storage directory if it does not exist
         if (!mediaStorageDir.exists() && !mediaStorageDir.mkdirs()){
             Log.d("TAG", "failed to create directory");
         }
-
-        // Return the file target for the photo based on filename
         File file = new File(mediaStorageDir.getPath() + File.separator + fileName);
 
         return file;
@@ -212,18 +185,45 @@ public class ProfileFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == RESULT_OK) {
-                // by this point we have the camera photo on disk
                 Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
-                // RESIZE BITMAP, see section below
-                // Load the taken image into a preview
                 image.setImageBitmap(takenImage);
-                UserImage profile = new UserImage();
+                UserImage profile = (UserImage)ParseObject.create("UserImage");
                 profile.setImage(new ParseFile(photoFile));
+                profile.setUser(ParseUser.getCurrentUser());
+                try {
+                    profile.save();
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
 
-            } else { // Result was a failure
+            } else {
                 Toast.makeText(getContext(), "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
         }
+    }
+
+    public void queryProfile(){
+        userLocation = locationGive.userLoc(getContext());
+        ParseQuery<UserImage> query = ParseQuery.getQuery(UserImage.class);
+        query.include(UserImage.KEY_USER);
+        query.setLimit(1);
+        query.whereEqualTo(UserImage.KEY_USER,ParseUser.getCurrentUser());
+
+        query.findInBackground(new FindCallback<UserImage>() {
+            @Override
+            public void done(List<UserImage> objects, ParseException e) {
+                if(e != null){
+                    Log.e("Post", "issue with getting posts", e);
+                }
+                for(UserImage post : objects){
+                    if(image != null) {
+                        Glide.with(getContext()).load(post.getImage().getUrl()).into(image);
+                    }
+                }
+            }
+        });
+
+
     }
 
     public void queryPosts(){

@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -43,6 +44,7 @@ public class DetailActivity extends AppCompatActivity {
     ArrayList<comment> mMessages;
     ChatAdapter mAdapter;
     RecyclerView rvChat;
+    Button delButton;
 
     // Keep track of initial load to scroll to the bottom of the ListView
     boolean mFirstLoad;
@@ -76,6 +78,7 @@ public class DetailActivity extends AppCompatActivity {
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(DetailActivity.this);
         linearLayoutManager.setReverseLayout(true);
         rvChat.setLayoutManager(linearLayoutManager);
+
 
 
         btSend.setOnClickListener(new View.OnClickListener() {
@@ -158,11 +161,28 @@ public class DetailActivity extends AppCompatActivity {
         myHandler.postDelayed(mRefreshMessagesRunnable, POLL_INTERVAL);
         etMessage = (EditText) findViewById(R.id.etMessage);
         btSend = (Button) findViewById(R.id.btSend);
+        delButton = (Button) findViewById(R.id.del);
         user = findViewById(R.id.author);
         Header = findViewById(R.id.header);
         descripition = findViewById(R.id.description);
         image = findViewById(R.id.itempicture);
         main = Parcels.unwrap(getIntent().getParcelableExtra("Message"));
+        Log.i("tag2", main.getAuthor().toString() + " "+ ParseUser.getCurrentUser().toString() );
+        if(ParseUser.getCurrentUser().getObjectId().equals(main.getAuthor().getObjectId())){
+        delButton.setVisibility(View.VISIBLE);
+        }
+        delButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                try {
+                    main.delete();
+                    Intent intent = new Intent(DetailActivity.this, MainActivity.class);
+                    startActivity(intent);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         Log.i("pop", main.toString());
         user.setText(main.getAuthor().getUsername());

@@ -32,6 +32,7 @@ import android.widget.Toast;
 
 import com.example.orbit.Message;
 import com.example.orbit.R;
+import com.example.orbit.locationGive;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.GoogleMap;
@@ -116,13 +117,6 @@ public class ComposeFragment extends Fragment implements OnMapReadyCallback {
 
         if(locationManager.isProviderEnabled(locationManager.NETWORK_PROVIDER)) {
             if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                // TODO: Consider calling
-                //    ActivityCompat#requestPermissions
-                // here to request the missing permissions, and then overriding
-                //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                //                                          int[] grantResults)
-                // to handle the case where the user grants the permission. See the documentation
-                // for ActivityCompat#requestPermissions for more details.
                 return;
             }
             locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, new LocationListener() {
@@ -132,7 +126,6 @@ public class ComposeFragment extends Fragment implements OnMapReadyCallback {
                     double longitude = location.getLongitude();
                     point.setLatitude(latitude);
                     point.setLongitude(longitude);
-                    //ProfileFragment.setUserLocation(point);
                 }
             });
         }
@@ -152,18 +145,9 @@ public class ComposeFragment extends Fragment implements OnMapReadyCallback {
 
     private void launchCamera(View view) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        // Create a File reference for future access
         photoFile = getPhotoFileUri(photoFileName);
-
-        // wrap File object into a content provider
-        // required for API >= 24
-        // See https://guides.codepath.com/android/Sharing-Content-with-Intents#sharing-files-with-api-24-or-higher
         Uri fileProvider = FileProvider.getUriForFile(getContext(), "com.codepath.fileprovider", photoFile);
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileProvider);
-
-        // If you call startActivityForResult() using an intent that no app can handle, your app will crash.
-        // So as long as the result is not null, it's safe to use the intent.
-        // Start the image capture intent to take photo
         if (intent.resolveActivity(getContext().getPackageManager()) != null)
             startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
     }
@@ -204,7 +188,7 @@ public class ComposeFragment extends Fragment implements OnMapReadyCallback {
         post.setAuthor(authorTemp);
         post.setMessagebody(bodyTemp);
         post.setPicture(new ParseFile(photoFile));
-        post.setLocation(point);
+        post.setLocation( locationGive.userLoc(getContext()));
 
         post.saveInBackground(new SaveCallback() {
             @Override
@@ -221,24 +205,7 @@ public class ComposeFragment extends Fragment implements OnMapReadyCallback {
 
         });
     }
-/**
-    public void queryPosts(){
-        ParseQuery<Post> query = ParseQuery.getQuery(Post.class);
-        query.include(Post.KEY_USER);
-        query.findInBackground(new FindCallback<Post>() {
-            @Override
-            public void done(List<Post> objects, ParseException e) {
-                if(e != null){
-                    Log.e("Post", "issue with getting posts", e);
-                }
-                for(Post post : objects){
-                    Log.i("Post", "Post:" + post.getDescription() + ", username:" + post.getUser().getUsername());
-                }
-            }
-        });
-    }
 
-**/
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {

@@ -18,6 +18,7 @@ public class ParseApplication extends Application {
 
         ParseObject.registerSubclass(Message.class);
         ParseObject.registerSubclass(comment.class);
+        ParseObject.registerSubclass(UserImage.class);
         // Use for troubleshooting -- remove this line for production
         // Use for monitoring Parse OkHttp traffic
         // Can be Level.BASIC, Level.HEADERS, or Level.BODY

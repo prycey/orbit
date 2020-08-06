@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,6 +29,8 @@ import org.parceler.Parcels;
 
 import java.util.Date;
 import java.util.List;
+
+import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 import static com.example.orbit.timeFixer.getTimeAgo;
 
@@ -86,6 +89,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         private TextView header;
         private TextView feetfrom;
         private TextView datefrom;
+        //private RelativeLayout message;
+
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -94,6 +99,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             item = itemView.findViewById(R.id.item);
             feetfrom = itemView.findViewById(R.id.feetfrom);
             datefrom = itemView.findViewById(R.id.time);
+            //message = itemView.findViewById(R.id.)
         }
 
         public void bind(Message post) {
@@ -108,17 +114,16 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             loc2.setLatitude(point.getLatitude());
             loc2.setLongitude(point.getLongitude());
             ParseGeoPoint parseGeoPoint = locationGive.userLoc(context);
-            Log.i("i", String.valueOf(parseGeoPoint.distanceInKilometersTo(point)));
-
-            Log.i("help3", parseGeoPoint.toString());
             loc.setLongitude(parseGeoPoint.getLongitude());
             loc.setLatitude(parseGeoPoint.getLatitude());
 
-            Log.i("help me", loc.toString() + " "+loc2.toString());
 
             if(image != null) {
+                int radius = 6; // corner radius, higher value = more rounded
+                int margin = 10;
                 Glide.with(context).load(post.getPicture().getUrl()).into(item);
             }
+            itemView.setBackgroundResource(R.drawable.customshape);
             author.setText(post.getAuthor().getUsername());
             item.setOnClickListener(new View.OnClickListener() {
                 @Override

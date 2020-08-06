@@ -5,17 +5,19 @@
     android:id="@+id/login"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/gradient"
     tools:context=".LoginActivity">
 
     <EditText
         android:id="@+id/etUsername"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="50dp"
+        android:layout_marginTop="228dp"
         android:ems="10"
+        android:hint="Username"
         android:inputType="textPersonName"
-        android:text="Name"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -25,6 +27,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="64dp"
         android:ems="10"
+        android:hint="Password"
         android:inputType="textPassword"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -32,20 +35,35 @@
 
     <Button
         android:id="@+id/etbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Button"
+        android:layout_width="210dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/roundedbutton"
+        android:text="Login"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPassword" />
 
     <Button
         android:id="@+id/rbutton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="3dp"
-        android:text="Button"
+        android:layout_width="210dp"
+        android:layout_height="30dp"
+        android:layout_marginTop="24dp"
+        android:background="@drawable/roundedbutton"
+        android:text="register"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/etbutton" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="198dp"
+        android:layout_height="104dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@mipmap/ic_launcher_foreground"
+        tools:layout_editor_absoluteY="91dp" />
 </androidx.constraintlayout.widget.ConstraintLayout>

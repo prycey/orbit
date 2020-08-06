@@ -43,16 +43,16 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
         final boolean isMe = message.getUserId() != null && message.getUserId().equals(mUserId);
 
         if (isMe) {
-            holder.imageMe.setVisibility(View.VISIBLE);
-            holder.imageOther.setVisibility(View.GONE);
+            //holder.imageMe.setVisibility(View.VISIBLE);
+            //holder.imageOther.setVisibility(View.GONE);
             holder.body.setGravity(Gravity.CENTER_VERTICAL | Gravity.RIGHT);
         } else {
-            holder.imageOther.setVisibility(View.VISIBLE);
-            holder.imageMe.setVisibility(View.GONE);
+            //holder.imageOther.setVisibility(View.VISIBLE);
+           // holder.imageMe.setVisibility(View.GONE);
             holder.body.setGravity(Gravity.CENTER_VERTICAL | Gravity.LEFT);
         }
 
-        final ImageView profileView = isMe ? holder.imageMe : holder.imageOther;
+        //final ImageView profileView = isMe ? holder.imageMe : holder.imageOther;
         //Glide.with(mContext).load(getProfileUrl(message.getParseUser().)).into(profileView);
         holder.body.setText(message.getBody());
     }
@@ -77,14 +77,14 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageOther;
-        ImageView imageMe;
+       // ImageView imageOther;
+        //ImageView imageMe;
         TextView body;
 
         public ViewHolder(View itemView) {
             super(itemView);
-            imageOther = (ImageView)itemView.findViewById(R.id.ivProfileOther);
-            imageMe = (ImageView)itemView.findViewById(R.id.ivProfileMe);
+            //imageOther = (ImageView)itemView.findViewById(R.id.ivProfileOther);
+            //imageMe = (ImageView)itemView.findViewById(R.id.ivProfileMe);
             body = (TextView)itemView.findViewById(R.id.tvBody);
         }
     }

@@ -6,24 +6,54 @@
     android:layout_height="match_parent"
     tools:context=".fragments.ProfileFragment">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="118dp"
-        android:layout_height="130dp"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="64dp"
-        android:layout_marginEnd="147dp"
-        tools:src="@drawable/ic_baseline_person_24" />
+    <RelativeLayout
+        android:id="@+id/rellay1"
+        android:layout_width="match_parent"
+        android:layout_height="202dp"
+        android:background="@color/purp"
+        android:paddingBottom="20dp">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/imageView"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="156dp"
+            tools:src="@drawable/ic_baseline_person_24" />
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="219dp"
+            android:layout_height="54dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="97dp"
+            android:layout_marginTop="142dp"
+            android:layout_marginEnd="-181dp"
+            android:layout_toStartOf="@+id/imageView"
+            android:fontFamily="sans-serif-light"
+            android:text="Joey Tribbiani"
+            android:textColor="@color/white"
+            android:textSize="32sp" />
+
+    </RelativeLayout>
+
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipeContainer"
         android:layout_width="match_parent"
-        android:layout_height="392dp"
-        android:layout_below="@+id/imageView"
+        android:layout_height="528dp"
+        android:layout_below="@+id/rellay1"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="109dp">
+        android:layout_alignParentBottom="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="1dp"
+        android:background="@drawable/gradient2">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rvProfile"
@@ -36,18 +66,6 @@
             android:layout_marginTop="124dp"
             android:layout_marginBottom="3dp" />
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="28dp"
-        android:layout_marginTop="28dp"
-        android:layout_marginEnd="57dp"
-        android:layout_toStartOf="@+id/imageView"
-        android:text="TextView" />
 
     <TextView
         android:id="@+id/textView2"

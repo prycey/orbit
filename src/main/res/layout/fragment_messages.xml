@@ -3,6 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="10dp"
+    android:background="@drawable/gradient"
     tools:context=".fragments.MessagesFragment">
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
@@ -19,11 +21,12 @@
 
     <SeekBar
         android:id="@+id/seekBar"
+        style="@style/Widget.AppCompat.SeekBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="49dp"
+        android:layout_marginBottom="1dp"
         android:max="25"
         android:progress="5" />
 
