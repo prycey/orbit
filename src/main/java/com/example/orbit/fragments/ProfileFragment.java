@@ -5,10 +5,12 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.core.content.FileProvider;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -212,6 +214,7 @@ public class ProfileFragment extends Fragment {
         query.whereEqualTo(UserImage.KEY_USER,ParseUser.getCurrentUser());
 
         query.findInBackground(new FindCallback<UserImage>() {
+            @RequiresApi(api = Build.VERSION_CODES.HONEYCOMB)
             @Override
             public void done(List<UserImage> objects, ParseException e) {
                 if(e != null){
