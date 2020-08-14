@@ -3,8 +3,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:background="@drawable/gradient"
+    android:orientation="vertical"
     tools:context=".fragments.ComposeFragment">
 
     <EditText
@@ -12,19 +12,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Header"
+        android:padding="8dp"
         android:inputType="textPersonName" />
 
     <ImageView
         android:id="@+id/picture"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        tools:srcCompat="@drawable/location" />
+        android:layout_height="242dp"
+        android:background="@drawable/location" />
 
     <EditText
         android:id="@+id/body"
         android:layout_width="match_parent"
         android:layout_height="222dp"
+        android:background="@drawable/bordershape"
         android:gravity="start|top"
+        android:padding="8dp"
         android:hint="Description"
         android:inputType="textMultiLine" />
 

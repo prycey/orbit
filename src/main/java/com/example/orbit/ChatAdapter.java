@@ -1,6 +1,7 @@
 package com.example.orbit;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
+import java.io.Console;
 import java.math.BigInteger;
 import java.security.MessageDigest;
 import java.util.List;
@@ -54,7 +56,10 @@ public class ChatAdapter extends RecyclerView.Adapter<ChatAdapter.ViewHolder> {
 
         //final ImageView profileView = isMe ? holder.imageMe : holder.imageOther;
         //Glide.with(mContext).load(getProfileUrl(message.getParseUser().)).into(profileView);
+        if(message.getUserId() != null) {
         holder.body.setText(message.getBody());
+        }
+        Log.i("dance", String.valueOf(message));
     }
 
     // Create a gravatar image based on the hash value obtained from userId

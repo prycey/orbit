@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
-    static final String USER_ID_KEY = "userId";
+    static final String USER_ID_KEY = "user";
     static final String BODY_KEY = "body";
     static final String MESSAGE_KEY = "message";
 
@@ -84,16 +84,17 @@ public class DetailActivity extends AppCompatActivity {
         btSend.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String data = etMessage.getText().toString();
+                String data = ParseUser.getCurrentUser().getUsername() + ": " + etMessage.getText().toString();
                 ParseObject comment = ParseObject.create("comment");
                 comment.put(USER_ID_KEY, ParseUser.getCurrentUser());
                 comment.put(BODY_KEY, data);
                 comment.put(MESSAGE_KEY, main);
+                comment.put("user", ParseUser.getCurrentUser());
                 comment.saveInBackground(new SaveCallback() {
                     @Override
                     public void done(ParseException e) {
                         if(e == null) {
-                            Toast.makeText(DetailActivity.this, "Successfully created comment on Parse",
+                            Toast.makeText(DetailActivity.this, "Successfully created comment on",
                                     Toast.LENGTH_SHORT).show();
                         } else {
                             Log.e("hfdsjh", "Failed to save comment", e);

@@ -6,7 +6,7 @@ import com.parse.ParseUser;
 
 @ParseClassName("comment")
 public class comment extends ParseObject {
-    public static final String USER_ID_KEY = "userid";
+    public static final String USER_ID_KEY = "user";
     public static final String BODY_KEY = "body";
     public static final String MESSAGE_KEY = "message";
 

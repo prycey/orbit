@@ -103,6 +103,8 @@ public class ProfileFragment extends Fragment {
         allPosts = new ArrayList<>();
         adapter = new MessageAdapter(getContext(), allPosts);
         image = view.findViewById(R.id.imageView);
+
+
         name = view.findViewById(R.id.name);
         name.setText(ParseUser.getCurrentUser().getUsername());
         rvMessages.setAdapter(adapter);
@@ -218,6 +220,7 @@ public class ProfileFragment extends Fragment {
                 for(UserImage post : objects){
                     if(image != null) {
                         Glide.with(getContext()).load(post.getImage().getUrl()).into(image);
+                        image.setRotation(90);
                     }
                 }
             }
@@ -253,4 +256,5 @@ public class ProfileFragment extends Fragment {
         // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_profile, container, false);
     }
+
 }

@@ -89,7 +89,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         private TextView header;
         private TextView feetfrom;
         private TextView datefrom;
-        //private RelativeLayout message;
 
 
         public ViewHolder(@NonNull View itemView) {
